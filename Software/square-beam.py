@@ -39,7 +39,7 @@ screwHoleCount = 12
 screwGap = 5
 screwPitch = 1.5
 
-import Part, FreeCAD, math
+import Part, FreeCAD
 from FreeCAD import Base
 import math as maths
 import random
