@@ -222,5 +222,6 @@ def Beam(x, y, z, t, d):
  beam = beam.cut(ch)
  return beam
 
+
 beam = Beam(length, width, height, thickness, holes)
 Part.show(beam)
