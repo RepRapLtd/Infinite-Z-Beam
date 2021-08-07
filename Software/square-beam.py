@@ -30,7 +30,7 @@ thickness = 3
 
 holes = 3.3
 
-# Set this to 12 to get a ring of 12 holes at 30 degrees, 8 to get 8 at 45 degrees, snd so on.
+# Set this to 12 to get a ring of 12 holes at 30 degrees, 8 to get 8 at 45 degrees, and so on.
 
 screwHoleCount = 12
 
