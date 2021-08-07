@@ -30,12 +30,15 @@ thickness = 3
 
 holes = 3.3
 
+# Set this to 12 to get a ring of 12 holes at 30 degrees, 8 to get 8 at 45 degrees, snd so on.
+
+screwHoleCount = 12
+
 #--------------------------------------------------------------------------------------------------------------
 
 # Internal parameters. Change these to get interesting, but possibly incorrect, results.
 
 angleFactor = 0.8
-screwHoleCount = 12
 screwGap = 5
 screwPitch = 1.5
 
