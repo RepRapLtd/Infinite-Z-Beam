@@ -50,7 +50,7 @@ The printed beam was physically bigger than its steel equivalent, of course. Thi
 
 It would also allow a beam of beams to be printed. Because it needs no support, this beam design could be used as the struts of a much bigger beam in the same pattern. This would make a fractal beam... 
 
-The Python program that makes the beams in FreeCAD is in the **Software** directory of this repository.
+Our Python program that makes the beams in FreeCAD is in the **Software** directory of this repository in the file **square-beam.py**. The file **Z-beam.scad** is an [OpenSCAD](https://openscad.org/) set-theoretic (CSG) version by David Eccles that he did *a few hours after we released this*. **We all love open-source?**
 
 It has not escaped our attention that beams of this sort would be ideal components for building a [RepRap](https://reprap.org/wiki/RepRap) infinite-Z belt printer.
 
