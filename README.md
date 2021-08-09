@@ -1,3 +1,5 @@
+# A 3D printed beam that is as stiff as steel
+
 A while ago [Naomi Wu 机械妖姬](https://en.wikipedia.org/wiki/Naomi_Wu) very kindly sent us one of [Creality](https://www.creality.com/)'s infinite-Z belt printers. Lots of people have printed long <span style="font-family: 'times new roman', times, serif;">I</span> beams on this type of machine, but we thought that we'd write a Python [FreeCAD](https://www.freecadweb.org/) program to generate parametric beams more suitable for 3D printing, taking advantage of the fact that complexity is more or less free with this technology and that infinite-Z belt printers can print many overhanging shapes without support material. The result is a beam that is about as stiff as a steel beam of the same weight. 
 
 [![](https://github.com/RepRapLtd/Infinite-Z-Beam/blob/main/Pix/beam.png)](https://github.com/RepRapLtd/Infinite-Z-Beam/blob/main/Pix/beam.png) 
