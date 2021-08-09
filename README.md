@@ -48,7 +48,7 @@ The printed beam was physically bigger than its steel equivalent, of course. Thi
 
 It would also allow a beam of beams to be printed. Because it needs no support, this beam design could be used as the struts of a much bigger beam in the same pattern. This would make a fractal beam... 
 
-The Python program and all the other files for this project are in [our Github repository here](https://github.com/RepRapLtd/Infinite-Z-Beam). 
+The Python program that makes the beams in FreeCAD is in the **Software** directory of this repository.
 
 It has not escaped our attention that beams of this sort would be ideal components for building a [RepRap](https://reprap.org/wiki/RepRap) infinite-Z belt printer.
 
