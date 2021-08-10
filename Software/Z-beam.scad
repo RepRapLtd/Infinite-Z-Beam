@@ -27,6 +27,9 @@ holeSize = 3;
 // Number of mounting holes at each end 
 screwHoleCount = 12;
 
+// Style of diagonal struts
+diagStyle = "tetra"; // ["tetra", "octa", "Z"]
+
 // ---------------------------------------------------------------------------
 
 // Internal parameters. Change these to get interesting, but possibly
@@ -55,7 +58,7 @@ boxStep = boxLen / numSteps;
 xi = y - thickness;
 
 // outline box
-module OutlineBox(endForm = 3){
+module OutlineBox(endForm = 3, flipDiags = false){
     if(endForm > 0){
       // top / bottom
       xtrans = 
@@ -80,24 +83,49 @@ module OutlineBox(endForm = 3){
     yol = y - 2 * thickness;
     zol = z - 2 * thickness;
     xol = boxStep - thickness;
+    dlx = sqrt(yol*yol + zol*zol) + sigma;
     dly = sqrt(yol*yol + xol*xol) + sigma;
     dlz = sqrt(zol*zol + xol*xol) + sigma;
+    diagMul1 = 
+       (diagStyle == "Z") ?     [-1,  1, -1,  1,  1,  1] :
+       (diagStyle == "tetra") ? [ 1, -1, -1,  1, -1, -1] :
+       (diagStyle == "octa") ?  [ 1, -1, -1,  1, -1, -1] :
+           [1, 1, 1, 1, 1, 1];
+    diagMul = (flipDiags) ? diagMul1 * -1 : diagMul1;
     // left
     translate([y/2,0,(boxStep+thickness)/2])
-        rotate([0,atan2(xol, yol)+90,0]) translate([-thickness/2,0,-dly/2])
+        rotate([0,diagMul[0] * atan2(xol, yol)+90,0])
+          translate([-thickness/2,0,-dly/2])
             cube([thickness, thickness, dly]);
     // right
     translate([y/2,z-thickness,(boxStep+thickness)/2])
-        rotate([0,-atan2(xol, yol)+90,0]) translate([-thickness/2,0,-dly/2])
+        rotate([0,diagMul[1] * atan2(xol, yol)+90,0])
+          translate([-thickness/2,0,-dly/2])
             cube([thickness, thickness, dly]);
     // front
     translate([0,z/2,(boxStep+thickness)/2])
-        rotate([atan2(xol, zol)+90,0,0]) translate([0,-thickness/2,-dlz/2])
+        rotate([diagMul[2] * atan2(xol, zol)+90,0,0])
+          translate([0,-thickness/2,-dlz/2])
             cube([thickness, thickness, dlz]);
     // back
     translate([y-thickness,z/2,(boxStep+thickness)/2])
-        rotate([-atan2(xol, zol)+90,0,0]) translate([0,-thickness/2,-dlz/2])
+        rotate([diagMul[3] * atan2(xol, zol)+90,0,0])
+          translate([0,-thickness/2,-dlz/2])
             cube([thickness, thickness, dlz]);
+    // internal bottom
+    if((endForm == 1) || (endForm == 3)){
+      translate([y/2, z/2, thickness/2])
+        rotate(diagMul[4] * atan2(zol, yol)+90) rotate([90,0,0])
+          translate([-thickness/2,-thickness/2,-dlx/2])
+            cube([thickness, thickness, dlx]);
+    }
+    // internal top [not usually printed]
+    if((endForm == 2) || (endForm == 3)){
+      translate([y/2, z/2, boxStep + thickness/2])
+        rotate(diagMul[5] * atan2(zol, yol)+90) rotate([90,0,0])
+          translate([-thickness/2,-thickness/2,-dlx/2])
+            cube([thickness, thickness, dlx]);
+    }
 }
 
 module EndBlock(report=false){
@@ -109,25 +137,25 @@ module EndBlock(report=false){
     cube([y,z,y]);
     // large hole cuts
     translate([y/2,z/2,y/2]) {
-      rotate([90,0,0]) cylinder(h=z+sigma, d=largeDiam, center=true, $fn=61);
-      rotate([0,90,0]) cylinder(h=z+sigma, d=largeDiam, center=true, $fn=61);
-      rotate([0,0, 0]) cylinder(h=z+sigma, d=largeDiam, center=true, $fn=61);
+      rotate([90,0,0]) cylinder(h=z*2, d=largeDiam, center=true, $fn=61);
+      rotate([0,90,0]) cylinder(h=z*2, d=largeDiam, center=true, $fn=61);
+      rotate([0,0, 0]) cylinder(h=z*2, d=largeDiam, center=true, $fn=61);
     }
     // screw hole cuts
     translate([y/2,z/2,y/2]) {
       rotate([90,0,0]) for(rti = [0:(screwHoleCount-1)]){
         rotate(rti * (360 / screwHoleCount)) translate([pitchRadius,0,0]){
-          cylinder(d=holeSizeAdj, h=z+sigma, center=true, $fn=13);
+          cylinder(d=holeSizeAdj, h=z*2, center=true, $fn=13);
         }
       }
       rotate([0,90,0]) for(rti = [0:(screwHoleCount-1)]){
         rotate(rti * (360 / screwHoleCount)) translate([pitchRadius,0,0]){
-          cylinder(d=holeSizeAdj, h=z+sigma, center=true, $fn=13);
+          cylinder(d=holeSizeAdj, h=z*2, center=true, $fn=13);
         }
       }
       for(rti = [0:(screwHoleCount-1)]){
         rotate(rti * (360 / screwHoleCount)) translate([pitchRadius,0,0]){
-          cylinder(d=holeSizeAdj, h=z+sigma, center=true, $fn=13);
+          cylinder(d=holeSizeAdj, h=z*2, center=true, $fn=13);
         }
       }
     }
@@ -144,7 +172,9 @@ EndBlock(report=true);
 
 // struts
 for(xi = [0 : numSteps-1]){
-  translate([0,0,xi*boxStep-thickness+y]) OutlineBox(endForm=((xi == 0) ? 0 : 1));
+  translate([0,0,xi*boxStep-thickness+y])
+    OutlineBox(endForm = ((xi == 0) ? 0 : 1),
+               flipDiags = ((diagStyle=="octa") && (xi % 2 == 0)));
 }
 
 // top end block
