@@ -51,6 +51,7 @@ import random
 # See: https://forum.freecadweb.org/viewtopic.php?f=22&t=35237&p=522227#p522227
 
 def NullSet():
+# return Part()
  a = Part.makeBox(1, 1, 1)
  a.translate(Base.Vector(10, 10, 10))
  return a.common(Part.makeBox(1, 1, 1))

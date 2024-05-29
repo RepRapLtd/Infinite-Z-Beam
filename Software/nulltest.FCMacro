@@ -1,0 +1,25 @@
+import Part, FreeCAD
+from FreeCAD import Base
+import math as maths
+import random
+
+a = Part.Shape() # Null shape
+b = Part.makeBox(1,1,1)
+
+c = b.cut(a)
+c.isNull()
+
+c = a.cut(b)
+c.isNull()
+
+c = a.fuse(b)
+c.isNull()
+
+c = b.fuse(a)
+c.isNull()
+
+c = a.common(b)
+c.isNull()
+
+c = b.common(a)
+c.isNull()
